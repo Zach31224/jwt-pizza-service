@@ -10,7 +10,7 @@
       name: Build
       runs-on: ubuntu-latest
       outputs:
-        version: ${{ steps.set_version.outputs.version }}
+        version: ${{steps.set_version.outputs.version}}
       services:
         mysql:
           image: mysql:8.0.29
@@ -40,7 +40,7 @@
         - name: Write config file
           run: |
             echo "module.exports = {
-              jwtSecret: '${{ secrets.JWT_SECRET }}',
+              jwtSecret: '${{ secrets.JWT_SECRET}}',
               db: {
                 connection: {
                   host: '127.0.0.1',
@@ -53,7 +53,7 @@
               },
               factory: {
                 url: 'https://pizza-factory.cs329.click',
-                apiKey: '${{ secrets.FACTORY_API_KEY }}',
+                apiKey: '${{ secrets.FACTORY_API_KEY}}',
               },
             };" > src/config.js
 
@@ -70,8 +70,8 @@
         - name: Update coverage
           run: |
             coverage=$(jq '.total.lines.pct' coverage/coverage-summary.json)
-            color=$(echo "$coverage < 80" | bc | awk '{if ($1) print "red"; else print"green"}')
-            curl -s -X POST "https://pizza-factory.cs329.click/api/badge/${{
-            secrets.NET_ID
-            }}/jwtpizzaservicecoverage?label=Coverage&value=$coverage%25&color=$color" -H
-            "authorization: bearer ${{ secrets.FACTORY_API_KEY }}"
+            color=$(echo "$coverage < 80" | bc | awk '{if ($1) print "red"; else print "green"}')
+            curl -s -X POST "https://pizza-factory.cs329.click/api/badge/${{secrets.NET_ID}}/jwtpizzaservicecoverage?label=Coverage&value=$coverage%25&color=$color" -H "authorization: bearer ${{ secrets.FACTORY_API_KEY }}"
+          env:
+            NET_ID: ${{secrets.NET_ID}}
+            FACTORY_API_KEY: ${{ secrets.FACTORY_API_KEY}}
