@@ -5,7 +5,7 @@
     "main": "index.js",
     "scripts": {
         "start": "cd src && node index.js",
-        "test": "jest --coverage --coverageReporters=json-summary --coverageReporters=text",  
+        "test": "jest --coverage --coverageReporters=json-summary --coverageReporters=text",
         "lint": "eslint src/**/*.js"
     },
     "jest": {
@@ -39,6 +39,7 @@
         "@playwright/test": "^1.58.1",
         "@types/node": "^25.2.0",
         "eslint": "^9.39.2",
-        "jest": "^29.7.0"
+        "jest": "^29.7.0",
+        "supertest": "^7.2.2"
     }
 }
