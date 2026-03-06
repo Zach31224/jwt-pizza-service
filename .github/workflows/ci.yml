@@ -75,3 +75,36 @@
           env:
             NET_ID: ${{secrets.NET_ID}}
             FACTORY_API_KEY: ${{ secrets.FACTORY_API_KEY}}
+
+  deploy:
+    needs: build
+    permissions:
+      id-token: write
+    runs-on: ubuntu-latest
+    env:
+      version: ${{needs.build.outputs.version}}
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Create OIDC token to AWS
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          audience: sts.amazonaws.com
+          aws-region: us-east-1
+          role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT }}:role/${{ secrets.CI_IAM_ROLE }}
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Build, tag, and push image to ECR
+        run: |
+          docker build -t ${{ secrets.ECR_REGISTRY }}/jwt-pizza-service:$version .
+          docker push ${{ secrets.ECR_REGISTRY }}/jwt-pizza-service:$version
+          docker tag ${{ secrets.ECR_REGISTRY }}/jwt-pizza-service:$version ${{ secrets.ECR_REGISTRY }}/jwt-pizza-service:latest
+          docker push ${{ secrets.ECR_REGISTRY }}/jwt-pizza-service:latest
+
+      - name: Deploy new container
+        run: |
+          aws ecs update-service --cluster jwt-pizza-service --service jwt-pizza-service --force-new-deployment
