@@ -4,4 +4,12 @@ COPY package*.json ./
 RUN npm ci --production
 COPY src ./src
 EXPOSE 3000
-ENTRYPOINT ["node", "src/index.js"]
+CMD node -e "\
+const fs=require('fs');\
+const cfg={\
+  jwtSecret: process.env.JWT_SECRET||'secret',\
+  db:{connection:{host:process.env.DB_HOST||'localhost',user:process.env.DB_USER||'root',password:process.env.DB_PASSWORD||'',database:process.env.DB_NAME||'pizza',connectTimeout:60000},listPerPage:10},\
+  factory:{url:'https://pizza-factory.cs329.click',apiKey:process.env.FACTORY_API_KEY||''}\
+};\
+fs.writeFileSync('/app/src/config.js','module.exports='+JSON.stringify(cfg));\
+" && node src/index.js
