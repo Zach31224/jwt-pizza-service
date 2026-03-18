@@ -93,4 +93,39 @@ describe('franchiseRouter', () => {
       expect(DB.createFranchise).not.toHaveBeenCalled();
     });
   });
+
+  describe('DELETE /api/franchise/:franchiseId', () => {
+    test('allows admin to delete franchise', async () => {
+      mockAdmin();
+      DB.deleteFranchise.mockResolvedValue();
+
+      const res = await request(app)
+        .delete('/api/franchise/42')
+        .set('Authorization', 'Bearer token');
+
+      expect(res.status).toBe(200);
+      expect(res.body.message).toBe('franchise deleted');
+      expect(DB.deleteFranchise).toHaveBeenCalledWith(42);
+    });
+
+    test('returns 403 for non-admin delete attempt', async () => {
+      mockDiner();
+
+      const res = await request(app)
+        .delete('/api/franchise/42')
+        .set('Authorization', 'Bearer token');
+
+      expect(res.status).toBe(403);
+      expect(res.body.message).toBe('unable to delete a franchise');
+      expect(DB.deleteFranchise).not.toHaveBeenCalled();
+    });
+
+    test('returns 401 when deleting franchise while unauthenticated', async () => {
+      const res = await request(app).delete('/api/franchise/42');
+
+      expect(res.status).toBe(401);
+      expect(res.body.message).toBe('unauthorized');
+      expect(DB.deleteFranchise).not.toHaveBeenCalled();
+    });
+  });
 });
