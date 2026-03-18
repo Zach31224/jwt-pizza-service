@@ -5,7 +5,7 @@ const metricsConfig = config.metrics || {};
 
 class Metrics {
   constructor() {
-    this.source = metricsConfig.source || 'jwt-pizza-service-dev';
+    this.source = metricsConfig.source || 'jwt-pizza-service-logs';
     this.endpointUrl = metricsConfig.endpointUrl || '';
     this.accountId = metricsConfig.accountId || '';
     this.apiKey = metricsConfig.apiKey || '';

@@ -2,7 +2,8 @@
 
 set -euo pipefail
 
-BASE_URL="${1:-http://localhost:3000}"
+BASE_URL="${1:-https://pizza-service.cs329.afoodsite.click}"
+BASE_URL="${BASE_URL%/}"
 EMAIL="loadtest_$RANDOM@jwt.com"
 PASSWORD="pizzapass"
 NAME="Load Tester"
