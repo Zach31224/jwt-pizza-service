@@ -5,6 +5,23 @@ const { StatusCodeError, asyncHandler } = require('../endpointHelper.js');
 
 const franchiseRouter = express.Router();
 
+function validateCreateFranchisePayload(franchise) {
+  const hasValidName = typeof franchise?.name === 'string' && franchise.name.trim().length > 0;
+  const hasValidAdmins =
+    Array.isArray(franchise?.admins) &&
+    franchise.admins.length > 0 &&
+    franchise.admins.every((admin) => typeof admin?.email === 'string' && admin.email.trim().length > 0);
+
+  if (!hasValidName || !hasValidAdmins) {
+    throw new StatusCodeError('franchise name and at least one admin email are required', 400);
+  }
+
+  return {
+    name: franchise.name.trim(),
+    admins: franchise.admins.map((admin) => ({ email: admin.email.trim() })),
+  };
+}
+
 franchiseRouter.docs = [
   {
     method: 'GET',
@@ -88,7 +105,7 @@ franchiseRouter.post(
       throw new StatusCodeError('unable to create a franchise', 403);
     }
 
-    const franchise = req.body;
+    const franchise = validateCreateFranchisePayload(req.body);
     res.send(await DB.createFranchise(franchise));
   })
 );
