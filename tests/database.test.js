@@ -24,6 +24,31 @@ const { describe, test, expect, beforeEach} = require('@jest/globals');
   });
 
   describe('database', () => {
+    test('ensureDefaultAdmin creates admin when missing?', async () => {
+      bcrypt.hash.mockResolvedValue('hashedpwd');
+      mockConnection.execute
+        .mockResolvedValueOnce([[]])
+        .mockResolvedValueOnce([{ insertId: 99 }])
+        .mockResolvedValueOnce([]);
+
+      await DB.ensureDefaultAdmin(mockConnection);
+
+      expect(mockConnection.execute).toHaveBeenCalledWith(`SELECT id FROM user WHERE email=?`, ['a@jwt.com']);
+      expect(mockConnection.execute).toHaveBeenCalledWith(`INSERT INTO userRole (userId, role, objectId) VALUES (?, ?, ?)`, [99, 'admin', 0]);
+    });
+
+    test('ensureDefaultAdmin adds missing admin role?', async () => {
+      mockConnection.execute
+        .mockResolvedValueOnce([[{ id: 1 }]])
+        .mockResolvedValueOnce([[]])
+        .mockResolvedValueOnce([]);
+
+      await DB.ensureDefaultAdmin(mockConnection);
+
+      expect(mockConnection.execute).toHaveBeenCalledWith(`SELECT id FROM userRole WHERE userId=? AND role=? AND objectId=0`, [1, 'admin']);
+      expect(mockConnection.execute).toHaveBeenCalledWith(`INSERT INTO userRole (userId, role, objectId) VALUES (?, ?, ?)`, [1, 'admin', 0]);
+    });
+
     test('getMenu returns menu items?', async () => {
       mockConnection.execute.mockResolvedValue([[{ id: 1, title: 'Veggie' }]]);
       const menu = await DB.getMenu();

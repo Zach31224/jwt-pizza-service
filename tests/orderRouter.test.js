@@ -49,9 +49,39 @@ const { describe, test, expect, beforeEach } = require('@jest/globals');        
       DB.addDinerOrder.mockResolvedValue({ id: 1 });
       fetch.mockResolvedValue({
         ok: true,
+        headers: { get: () => 'application/json' },
         json: async () => ({ jwt: 'token', reportUrl: 'url' }),
       });
       const res = await request(app).post('/api/order').send({ items: [] });
       expect(res.status).toBe(200);
+    });
+
+    test('POST / returns 502 with upstream diagnostics when factory rejects order', async () => {
+      DB.addDinerOrder.mockResolvedValue({ id: 1, items: [] });
+      fetch.mockResolvedValue({
+        ok: false,
+        status: 500,
+        headers: { get: () => 'application/json' },
+        json: async () => ({ message: 'factory exploded', reportUrl: 'https://factory/report' }),
+      });
+
+      const res = await request(app).post('/api/order').send({ items: [] });
+
+      expect(res.status).toBe(502);
+      expect(res.body.message).toBe('Failed to fulfill order at factory');
+      expect(res.body.upstreamStatus).toBe(500);
+      expect(res.body.upstreamMessage).toBe('factory exploded');
+      expect(res.body.followLinkToEndChaos).toBe('https://factory/report');
+    });
+
+    test('POST / returns 502 when factory cannot be reached', async () => {
+      DB.addDinerOrder.mockResolvedValue({ id: 1, items: [] });
+      fetch.mockRejectedValue(new Error('connect ECONNREFUSED'));
+
+      const res = await request(app).post('/api/order').send({ items: [] });
+
+      expect(res.status).toBe(502);
+      expect(res.body.message).toBe('Failed to contact pizza factory');
+      expect(res.body.upstreamMessage).toContain('ECONNREFUSED');
     });
   });

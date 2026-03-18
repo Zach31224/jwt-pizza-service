@@ -7,6 +7,16 @@ const metrics = require('../metrics.js');
 
 const orderRouter = express.Router();
 
+async function parseFactoryResponse(response) {
+  const contentType = response.headers?.get?.('content-type') || '';
+  if (contentType.includes('application/json')) {
+    return await response.json();
+  }
+
+  const text = await response.text();
+  return { message: text };
+}
+
 orderRouter.docs = [
   {
     method: 'GET',
@@ -81,21 +91,36 @@ orderRouter.post(
     const orderReq = req.body;
     const order = await DB.addDinerOrder(req.user, orderReq);
     const purchaseStart = Date.now();
-    const r = await fetch(`${config.factory.url}/api/order`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', authorization: `Bearer ${config.factory.apiKey}` },
-      body: JSON.stringify({ diner: { id: req.user.id, name: req.user.name, email: req.user.email }, order }),
-    });
+    let r;
+    let factoryBody = {};
+    try {
+      r = await fetch(`${config.factory.url}/api/order`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', authorization: `Bearer ${config.factory.apiKey}` },
+        body: JSON.stringify({ diner: { id: req.user.id, name: req.user.name, email: req.user.email }, order }),
+      });
+      factoryBody = await parseFactoryResponse(r);
+    } catch (error) {
+      const purchaseLatencyMs = Date.now() - purchaseStart;
+      metrics.pizzaPurchase(false, purchaseLatencyMs, 0, 0);
+      res.status(502).send({ message: 'Failed to contact pizza factory', upstreamMessage: error.message });
+      return;
+    }
+
     const purchaseLatencyMs = Date.now() - purchaseStart;
-    const j = await r.json();
     const pizzasSold = Array.isArray(order.items) ? order.items.length : 0;
     const revenue = Array.isArray(order.items) ? order.items.reduce((sum, item) => sum + (Number(item.price) || 0), 0) : 0;
     if (r.ok) {
       metrics.pizzaPurchase(true, purchaseLatencyMs, revenue, pizzasSold);
-      res.send({ order, followLinkToEndChaos: j.reportUrl, jwt: j.jwt });
+      res.send({ order, followLinkToEndChaos: factoryBody.reportUrl, jwt: factoryBody.jwt });
     } else {
       metrics.pizzaPurchase(false, purchaseLatencyMs, 0, 0);
-      res.status(500).send({ message: 'Failed to fulfill order at factory', followLinkToEndChaos: j.reportUrl });
+      res.status(502).send({
+        message: 'Failed to fulfill order at factory',
+        followLinkToEndChaos: factoryBody.reportUrl,
+        upstreamStatus: r.status,
+        upstreamMessage: factoryBody.message,
+      });
     }
   })
 );

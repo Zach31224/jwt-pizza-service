@@ -380,16 +380,29 @@ class DB {
           await connection.query(statement);
         }
 
-        if (!dbExists) {
-          const defaultAdmin = { name: '常用名字', email: 'a@jwt.com', password: 'admin', roles: [{ role: Role.Admin }] };
-          this.addUser(defaultAdmin);
-        }
+        await this.ensureDefaultAdmin(connection);
       } finally {
         connection.end();
       }
     } catch (err) {
       console.error(JSON.stringify({ message: 'Error initializing database', exception: err.message, connection: config.db.connection }));
     }
+  }
+
+  async ensureDefaultAdmin(connection) {
+    const defaultAdmin = { name: '常用名字', email: 'a@jwt.com', password: 'admin' };
+    const existingAdmin = await this.query(connection, `SELECT id FROM user WHERE email=?`, [defaultAdmin.email]);
+    if (existingAdmin.length > 0) {
+      const existingAdminRole = await this.query(connection, `SELECT id FROM userRole WHERE userId=? AND role=? AND objectId=0`, [existingAdmin[0].id, Role.Admin]);
+      if (existingAdminRole.length === 0) {
+        await this.query(connection, `INSERT INTO userRole (userId, role, objectId) VALUES (?, ?, ?)`, [existingAdmin[0].id, Role.Admin, 0]);
+      }
+      return;
+    }
+
+    const hashedPassword = await bcrypt.hash(defaultAdmin.password, 10);
+    const userResult = await this.query(connection, `INSERT INTO user (name, email, password) VALUES (?, ?, ?)`, [defaultAdmin.name, defaultAdmin.email, hashedPassword]);
+    await this.query(connection, `INSERT INTO userRole (userId, role, objectId) VALUES (?, ?, ?)`, [userResult.insertId, Role.Admin, 0]);
   }
 
   async checkDatabaseExists(connection) {
