@@ -4,6 +4,7 @@ const { Role, DB } = require('../database/database.js');
 const { authRouter } = require('./authRouter.js');
 const { asyncHandler, StatusCodeError } = require('../endpointHelper.js');
 const metrics = require('../metrics.js');
+const logger = require('../logger.js');
 
 const orderRouter = express.Router();
 
@@ -93,14 +94,30 @@ orderRouter.post(
     const purchaseStart = Date.now();
     let r;
     let factoryBody = {};
+    const factoryRequestBody = { diner: { id: req.user.id, name: req.user.name, email: req.user.email }, order };
+    await logger.log('factory_request', {
+      method: 'POST',
+      path: `${config.factory.url}/api/order`,
+      body: factoryRequestBody,
+    });
     try {
       r = await fetch(`${config.factory.url}/api/order`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', authorization: `Bearer ${config.factory.apiKey}` },
-        body: JSON.stringify({ diner: { id: req.user.id, name: req.user.name, email: req.user.email }, order }),
+        body: JSON.stringify(factoryRequestBody),
       });
       factoryBody = await parseFactoryResponse(r);
+      await logger.log('factory_response', {
+        path: `${config.factory.url}/api/order`,
+        statusCode: r.status,
+        body: factoryBody,
+      });
     } catch (error) {
+      await logger.log('factory_response', {
+        path: `${config.factory.url}/api/order`,
+        statusCode: 502,
+        body: { message: error.message },
+      });
       const purchaseLatencyMs = Date.now() - purchaseStart;
       metrics.pizzaPurchase(false, purchaseLatencyMs, 0, 0);
       res.status(502).send({ message: 'Failed to contact pizza factory', upstreamMessage: error.message });
