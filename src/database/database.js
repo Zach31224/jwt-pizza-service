@@ -330,8 +330,26 @@ class DB {
     return '';
   }
 
+  sanitizeDbParams(params) {
+    if (!Array.isArray(params)) {
+      return [];
+    }
+
+    return params.map((value) => {
+      if (value === null || value === undefined) {
+        return value;
+      }
+
+      if (typeof value === 'number' || typeof value === 'boolean') {
+        return value;
+      }
+
+      return '[REDACTED]';
+    });
+  }
+
   async query(connection, sql, params) {
-    await logger.log('db_query', { sql, params });
+    await logger.log('db_query', { sql, params: this.sanitizeDbParams(params) });
     const [results] = await connection.execute(sql, params);
     return results;
   }
