@@ -2,14 +2,13 @@ const config = require('./config.js');
 
 class Logger {
   constructor() {
-    const metrics = config.metrics || {};
     const logging = config.logging || {};
     const isProduction = process.env.NODE_ENV === 'production';
 
-    this.source = isProduction ? 'jwt-pizza-service' : 'jwt-pizza-service-dev';
-    this.endpointUrl = logging.endpointUrl || 'https://logs-prod-021.grafana.net/loki/api/v1/push';
-    this.accountId = metrics.accountId || '';
-    this.apiKey = metrics.apiKey || '';
+    this.source = logging.source || (isProduction ? 'jwt-pizza-service' : 'jwt-pizza-service-dev');
+    this.endpointUrl = logging.endpointUrl || '';
+    this.accountId = logging.accountId || '';
+    this.apiKey = logging.apiKey || '';
   }
 
   redactKeys = ['authorization', 'password', 'token', 'apikey', 'apiKey', 'jwt', 'cookie', 'set-cookie', 'email'];
