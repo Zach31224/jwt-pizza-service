@@ -29,269 +29,6 @@
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "thresholds"
-          },
-          "fieldMinMax": true,
-          "mappings": [],
-          "thresholds": {
-            "mode": "percentage",
-            "steps": [
-              {
-                "color": "green",
-                "value": 0
-              },
-              {
-                "color": "semi-dark-red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "percent"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 9,
-        "w": 6,
-        "x": 0,
-        "y": 0
-      },
-      "id": 7,
-      "options": {
-        "barShape": "flat",
-        "barWidthFactor": 0.5,
-        "effects": {
-          "barGlow": false,
-          "centerGlow": false,
-          "gradient": true
-        },
-        "endpointMarker": "point",
-        "minVizHeight": 75,
-        "minVizWidth": 75,
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "segmentCount": 1,
-        "segmentSpacing": 0.3,
-        "shape": "gauge",
-        "showThresholdLabels": false,
-        "showThresholdMarkers": true,
-        "sizing": "auto",
-        "sparkline": true,
-        "textMode": "auto"
-      },
-      "pluginVersion": "13.0.0-22843068776.patch2",
-      "targets": [
-        {
-          "datasource": {
-            "type": "loki",
-            "uid": "dfgdean8f5jb4c"
-          },
-          "direction": "backward",
-          "editorMode": "code",
-          "expr": "avg(last_over_time(({source=~\"jwt-pizza-service\", metric=\"system\"} | json | unwrap cpuUsagePercent)[5m]))",
-          "queryType": "range",
-          "refId": "A"
-        }
-      ],
-      "title": "CPU Usage%",
-      "type": "gauge"
-    },
-    {
-      "datasource": {
-        "type": "loki",
-        "uid": "dfgdean8f5jb4c"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "percentage",
-            "steps": [
-              {
-                "color": "green",
-                "value": 0
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "percent"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 9,
-        "w": 6,
-        "x": 6,
-        "y": 0
-      },
-      "id": 8,
-      "options": {
-        "barShape": "flat",
-        "barWidthFactor": 0.5,
-        "effects": {
-          "barGlow": false,
-          "centerGlow": false,
-          "gradient": true
-        },
-        "endpointMarker": "point",
-        "minVizHeight": 75,
-        "minVizWidth": 75,
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "segmentCount": 1,
-        "segmentSpacing": 0.3,
-        "shape": "gauge",
-        "showThresholdLabels": false,
-        "showThresholdMarkers": true,
-        "sizing": "auto",
-        "sparkline": true,
-        "textMode": "auto"
-      },
-      "pluginVersion": "13.0.0-22843068776.patch2",
-      "targets": [
-        {
-          "datasource": {
-            "type": "loki",
-            "uid": "dfgdean8f5jb4c"
-          },
-          "direction": "backward",
-          "editorMode": "code",
-          "expr": "avg(last_over_time(({source=~\"jwt-pizza-service\", metric=\"system\"} | json | unwrap memoryUsagePercent)[5m]))",
-          "queryType": "range",
-          "refId": "A"
-        }
-      ],
-      "title": "Memory Usage",
-      "type": "gauge"
-    },
-    {
-      "datasource": {
-        "type": "loki",
-        "uid": "dfgdean8f5jb4c"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "barWidthFactor": 0.6,
-            "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
-            "showValues": false,
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": 0
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          }
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 6,
-        "x": 12,
-        "y": 0
-      },
-      "id": 2,
-      "options": {
-        "annotations": {
-          "multiLane": false
-        },
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "tooltip": {
-          "hideZeros": false,
-          "mode": "single",
-          "sort": "none"
-        }
-      },
-      "pluginVersion": "13.0.0-22843068776.patch2",
-      "targets": [
-        {
-          "datasource": {
-            "type": "loki",
-            "uid": "dfgdean8f5jb4c"
-          },
-          "direction": "backward",
-          "editorMode": "code",
-          "expr": "avg(last_over_time(({source=\"jwt-pizza-service\", metric=\"auth\"} | json | unwrap activeUsers)[5m]))",
-          "legendFormat": "Users",
-          "queryType": "range",
-          "refId": "A"
-        }
-      ],
-      "title": "Active Users",
-      "type": "timeseries"
-    },
-    {
-      "datasource": {
-        "type": "loki",
-        "uid": "dfgdean8f5jb4c"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
             "mode": "palette-classic"
           },
           "custom": {
@@ -409,12 +146,13 @@
       "gridPos": {
         "h": 8,
         "w": 6,
-        "x": 18,
+        "x": 0,
         "y": 0
       },
       "id": 1,
       "options": {
         "annotations": {
+          "clustering": -1,
           "multiLane": false
         },
         "legend": {
@@ -429,7 +167,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "13.0.0-22843068776.patch2",
+      "pluginVersion": "13.0.0-23429090056",
       "targets": [
         {
           "datasource": {
@@ -489,6 +227,313 @@
       ],
       "title": "HTTP Requests / Minute",
       "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "loki",
+        "uid": "dfgdean8f5jb4c"
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 6,
+        "y": 0
+      },
+      "id": 9,
+      "options": {
+        "dedupStrategy": "none",
+        "enableInfiniteScrolling": false,
+        "enableLogDetails": true,
+        "prettifyLogMessage": true,
+        "showControls": false,
+        "showFieldSelector": false,
+        "showLevel": true,
+        "showTime": false,
+        "sortOrder": "Descending",
+        "timestampResolution": "ms",
+        "unwrappedColumns": false,
+        "wrapLogMessage": false
+      },
+      "pluginVersion": "13.0.0-23429090056",
+      "targets": [
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "dfgdean8f5jb4c"
+          },
+          "direction": "backward",
+          "editorMode": "code",
+          "expr": "{source=~\"jwt-pizza-service.*\"}",
+          "queryType": "range",
+          "refId": "A"
+        }
+      ],
+      "title": "HTTP Requests (Logs)",
+      "type": "logs"
+    },
+    {
+      "datasource": {
+        "type": "loki",
+        "uid": "dfgdean8f5jb4c"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 6,
+        "x": 18,
+        "y": 0
+      },
+      "id": 2,
+      "options": {
+        "annotations": {
+          "clustering": -1,
+          "multiLane": false
+        },
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "13.0.0-23429090056",
+      "targets": [
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "dfgdean8f5jb4c"
+          },
+          "direction": "backward",
+          "editorMode": "code",
+          "expr": "avg(last_over_time(({source=\"jwt-pizza-service\", metric=\"auth\"} | json | unwrap activeUsers)[5m]))",
+          "legendFormat": "Users",
+          "queryType": "range",
+          "refId": "A"
+        }
+      ],
+      "title": "Active Users",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "loki",
+        "uid": "dfgdean8f5jb4c"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "fieldMinMax": true,
+          "mappings": [],
+          "thresholds": {
+            "mode": "percentage",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "semi-dark-red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "percent"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 6,
+        "x": 0,
+        "y": 8
+      },
+      "id": 7,
+      "options": {
+        "barShape": "flat",
+        "barWidthFactor": 0.5,
+        "effects": {
+          "barGlow": false,
+          "centerGlow": false,
+          "gradient": true
+        },
+        "endpointMarker": "point",
+        "minVizHeight": 75,
+        "minVizWidth": 75,
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "segmentCount": 1,
+        "segmentSpacing": 0.3,
+        "shape": "gauge",
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true,
+        "sizing": "auto",
+        "sparkline": true,
+        "textMode": "auto"
+      },
+      "pluginVersion": "13.0.0-23429090056",
+      "targets": [
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "dfgdean8f5jb4c"
+          },
+          "direction": "backward",
+          "editorMode": "code",
+          "expr": "avg(last_over_time(({source=~\"jwt-pizza-service\", metric=\"system\"} | json | unwrap cpuUsagePercent)[5m]))",
+          "queryType": "range",
+          "refId": "A"
+        }
+      ],
+      "title": "CPU Usage%",
+      "type": "gauge"
+    },
+    {
+      "datasource": {
+        "type": "loki",
+        "uid": "dfgdean8f5jb4c"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "percentage",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "percent"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 6,
+        "x": 6,
+        "y": 8
+      },
+      "id": 8,
+      "options": {
+        "barShape": "flat",
+        "barWidthFactor": 0.5,
+        "effects": {
+          "barGlow": false,
+          "centerGlow": false,
+          "gradient": true
+        },
+        "endpointMarker": "point",
+        "minVizHeight": 75,
+        "minVizWidth": 75,
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "segmentCount": 1,
+        "segmentSpacing": 0.3,
+        "shape": "gauge",
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true,
+        "sizing": "auto",
+        "sparkline": true,
+        "textMode": "auto"
+      },
+      "pluginVersion": "13.0.0-23429090056",
+      "targets": [
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "dfgdean8f5jb4c"
+          },
+          "direction": "backward",
+          "editorMode": "code",
+          "expr": "avg(last_over_time(({source=~\"jwt-pizza-service\", metric=\"system\"} | json | unwrap memoryUsagePercent)[5m]))",
+          "queryType": "range",
+          "refId": "A"
+        }
+      ],
+      "title": "Memory Usage",
+      "type": "gauge"
     },
     {
       "datasource": {
@@ -585,6 +630,7 @@
       "id": 3,
       "options": {
         "annotations": {
+          "clustering": -1,
           "multiLane": false
         },
         "legend": {
@@ -599,7 +645,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "13.0.0-22843068776.patch2",
+      "pluginVersion": "13.0.0-23429090056",
       "targets": [
         {
           "datasource": {
@@ -625,6 +671,133 @@
         }
       ],
       "title": "Authentication attempts/minute",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "loki",
+        "uid": "dfgdean8f5jb4c"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 14
+      },
+      "id": 5,
+      "options": {
+        "annotations": {
+          "clustering": -1,
+          "multiLane": false
+        },
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "13.0.0-23429090056",
+      "targets": [
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "dfgdean8f5jb4c"
+          },
+          "direction": "backward",
+          "editorMode": "code",
+          "expr": "avg(sum_over_time({source=~\"jwt-pizza-service(-dev)?\", metric=\"pizza\"} | json | __error__=\"\" | unwrap sold [5m]))",
+          "legendFormat": "Sold/min",
+          "queryType": "range",
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "dfgdean8f5jb4c"
+          },
+          "direction": "backward",
+          "editorMode": "code",
+          "expr": "avg(sum_over_time({source=~\"jwt-pizza-service(-dev)?\", metric=\"pizza\"} | json | __error__=\"\" | unwrap failures [5m]))",
+          "legendFormat": "Failures/min",
+          "queryType": "range",
+          "refId": "B"
+        },
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "dfgdean8f5jb4c"
+          },
+          "direction": "backward",
+          "editorMode": "code",
+          "expr": "avg(sum_over_time({source=~\"jwt-pizza-service(-dev)?\", metric=\"pizza\"} | json | __error__=\"\" | unwrap revenue [5m]))",
+          "legendFormat": "Revenue/min",
+          "queryType": "range",
+          "refId": "C"
+        }
+      ],
+      "title": "Pizzas (sold/failures/revenue)",
       "type": "timeseries"
     },
     {
@@ -697,11 +870,12 @@
         "h": 5,
         "w": 12,
         "x": 0,
-        "y": 9
+        "y": 17
       },
       "id": 4,
       "options": {
         "annotations": {
+          "clustering": -1,
           "multiLane": false
         },
         "legend": {
@@ -716,7 +890,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "13.0.0-22843068776.patch2",
+      "pluginVersion": "13.0.0-23429090056",
       "targets": [
         {
           "datasource": {
@@ -813,11 +987,12 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 14
+        "y": 22
       },
       "id": 6,
       "options": {
         "annotations": {
+          "clustering": -1,
           "multiLane": false
         },
         "legend": {
@@ -832,7 +1007,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "13.0.0-22843068776.patch2",
+      "pluginVersion": "13.0.0-23429090056",
       "targets": [
         {
           "datasource": {
@@ -855,86 +1030,28 @@
         "type": "loki",
         "uid": "dfgdean8f5jb4c"
       },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "barWidthFactor": 0.6,
-            "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
-            "showValues": false,
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": 0
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          }
-        },
-        "overrides": []
-      },
       "gridPos": {
-        "h": 8,
+        "h": 16,
         "w": 12,
         "x": 12,
-        "y": 14
+        "y": 22
       },
-      "id": 5,
+      "id": 10,
       "options": {
-        "annotations": {
-          "multiLane": false
-        },
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "tooltip": {
-          "hideZeros": false,
-          "mode": "single",
-          "sort": "none"
-        }
+        "dedupStrategy": "none",
+        "enableInfiniteScrolling": false,
+        "enableLogDetails": true,
+        "prettifyLogMessage": true,
+        "showControls": false,
+        "showFieldSelector": false,
+        "showLevel": true,
+        "showTime": false,
+        "sortOrder": "Descending",
+        "timestampResolution": "ms",
+        "unwrappedColumns": false,
+        "wrapLogMessage": false
       },
-      "pluginVersion": "13.0.0-22843068776.patch2",
+      "pluginVersion": "13.0.0-23429090056",
       "targets": [
         {
           "datasource": {
@@ -943,38 +1060,142 @@
           },
           "direction": "backward",
           "editorMode": "code",
-          "expr": "avg(sum_over_time({source=~\"jwt-pizza-service(-dev)?\", metric=\"pizza\"} | json | __error__=\"\" | unwrap sold [5m]))",
-          "legendFormat": "Sold/min",
+          "expr": "{source=~\"jwt-pizza-service.*\", eventType=\"db_query\"} | json | line_format \"{{.sql}}\"",
           "queryType": "range",
           "refId": "A"
-        },
-        {
-          "datasource": {
-            "type": "loki",
-            "uid": "dfgdean8f5jb4c"
-          },
-          "direction": "backward",
-          "editorMode": "code",
-          "expr": "avg(sum_over_time({source=~\"jwt-pizza-service(-dev)?\", metric=\"pizza\"} | json | __error__=\"\" | unwrap failures [5m]))",
-          "legendFormat": "Failures/min",
-          "queryType": "range",
-          "refId": "B"
-        },
-        {
-          "datasource": {
-            "type": "loki",
-            "uid": "dfgdean8f5jb4c"
-          },
-          "direction": "backward",
-          "editorMode": "code",
-          "expr": "avg(sum_over_time({source=~\"jwt-pizza-service(-dev)?\", metric=\"pizza\"} | json | __error__=\"\" | unwrap revenue [5m]))",
-          "legendFormat": "Revenue/min",
-          "queryType": "range",
-          "refId": "C"
         }
       ],
-      "title": "Pizzas (sold/failures/revenue)",
-      "type": "timeseries"
+      "title": "Database Queries (Logs)",
+      "type": "logs"
+    },
+    {
+      "datasource": {
+        "type": "loki",
+        "uid": "dfgdean8f5jb4c"
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 12,
+        "x": 0,
+        "y": 30
+      },
+      "id": 15,
+      "options": {
+        "dedupStrategy": "none",
+        "enableInfiniteScrolling": false,
+        "enableLogDetails": true,
+        "prettifyLogMessage": true,
+        "showControls": false,
+        "showFieldSelector": false,
+        "showLevel": true,
+        "showTime": false,
+        "sortOrder": "Descending",
+        "timestampResolution": "ms",
+        "unwrappedColumns": false,
+        "wrapLogMessage": false
+      },
+      "pluginVersion": "13.0.0-23429090056",
+      "targets": [
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "dfgdean8f5jb4c"
+          },
+          "direction": "backward",
+          "editorMode": "code",
+          "expr": "{source=~\"jwt-pizza-service.*\", eventType=~\"factory.*\"} | json",
+          "queryType": "range",
+          "refId": "A"
+        }
+      ],
+      "title": "Factory Requests & Responses (test)",
+      "type": "logs"
+    },
+    {
+      "datasource": {
+        "type": "loki",
+        "uid": "dfgdean8f5jb4c"
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 0,
+        "y": 37
+      },
+      "id": 14,
+      "options": {
+        "dedupStrategy": "none",
+        "enableInfiniteScrolling": false,
+        "enableLogDetails": true,
+        "prettifyLogMessage": true,
+        "showControls": false,
+        "showFieldSelector": false,
+        "showLevel": true,
+        "showTime": false,
+        "sortOrder": "Descending",
+        "timestampResolution": "ms",
+        "unwrappedColumns": false,
+        "wrapLogMessage": false
+      },
+      "pluginVersion": "13.0.0-23429090056",
+      "targets": [
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "dfgdean8f5jb4c"
+          },
+          "direction": "forward",
+          "editorMode": "code",
+          "expr": "{source=~\"jwt-pizza-service.*\"} |~ \"\\\"eventType\\\":\\\"\" | json\n| line_format \"{{.eventType}} {{if .method}}{{.method}}{{end}} {{if .path}}{{.path}}{{end}} {{if .statusCode}}{{.statusCode}}{{end}} {{if .sql}}{{.sql}}{{end}} {{if .message}}{{.message}}{{end}} {{if .reason}}{{.reason}}{{end}}\"",
+          "queryType": "range",
+          "refId": "A"
+        }
+      ],
+      "title": "All Events Summary (Logs)",
+      "type": "logs"
+    },
+    {
+      "datasource": {
+        "uid": "dfgdean8f5jb4c"
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 38
+      },
+      "id": 13,
+      "options": {
+        "dedupStrategy": "none",
+        "enableInfiniteScrolling": false,
+        "enableLogDetails": true,
+        "prettifyLogMessage": true,
+        "showControls": false,
+        "showFieldSelector": false,
+        "showLevel": true,
+        "showTime": false,
+        "sortOrder": "Descending",
+        "timestampResolution": "ms",
+        "unwrappedColumns": false,
+        "wrapLogMessage": false
+      },
+      "pluginVersion": "13.0.0-23429090056",
+      "targets": [
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "dfgdean8f5jb4c"
+          },
+          "direction": "backward",
+          "editorMode": "code",
+          "expr": "{source=~\"jwt-pizza-service.*\", eventType=~\"unhandled.*\"} | json",
+          "legendFormat": "Unhandled",
+          "queryType": "range",
+          "refId": "A"
+        }
+      ],
+      "title": "Unhandled Exceptions & Rejections",
+      "type": "logs"
     }
   ],
   "preload": true,
@@ -985,14 +1206,14 @@
     "list": []
   },
   "time": {
-    "from": "now-3h",
+    "from": "now-15m",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "browser",
   "title": "Pizza-Dashboard",
   "weekStart": "",
-  "version": 51,
+  "version": 72,
   "uid": "zacsw9q",
   "id": 3008983337689088
 }
