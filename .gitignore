@@ -4,6 +4,8 @@
 config.js
 coverage
 dist
+.venv
+
 
 # Playwright
 node_modules/
